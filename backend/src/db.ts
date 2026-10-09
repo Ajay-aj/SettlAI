@@ -302,6 +302,11 @@ export function getExpense(userId: string, id: string): Expense | undefined {
   return row ? mapExpense(row) : undefined;
 }
 
+export function getExpenseById(id: string): Expense | undefined {
+  const row = db().prepare("SELECT * FROM expenses WHERE id = ?").get(id) as ExpenseRow | undefined;
+  return row ? mapExpense(row) : undefined;
+}
+
 export function listExpenses(userId: string, status?: ExpenseStatus): Expense[] {
   const rows = status
     ? (db()

@@ -14,6 +14,7 @@ import {
   getClaim,
   getClaimById,
   getExpense,
+  getExpenseById,
   getProfile,
   insertClaim,
   insertExpense,
@@ -237,12 +238,14 @@ export function createApp(): express.Express {
   app.get(
     "/api/expenses/:id/file",
     asyncHandler(async (req, res) => {
-      const expense = getExpense(userOf(req).uid, req.params.id);
+      const user = userOf(req);
+      const expense =
+        getExpense(user.uid, req.params.id) ?? (user.role === "admin" ? getExpenseById(req.params.id) : undefined);
       if (!expense) {
         res.status(404).json({ error: "Bill not found." });
         return;
       }
-      const root = uploadsRoot();
+      const root = path.resolve(uploadsRoot());
       const full = path.resolve(root, expense.filePath);
       if (!full.startsWith(root + path.sep)) {
         res.status(400).json({ error: "Bill file is unavailable." });
@@ -254,6 +257,8 @@ export function createApp(): express.Express {
         res.status(404).json({ error: "Bill file is unavailable." });
         return;
       }
+      const safeName = expense.fileName.replace(/["\r\n]/g, "") || "bill";
+      res.setHeader("Content-Disposition", `inline; filename="${safeName}"`);
       res.type(expense.mimeType);
       res.sendFile(full);
     }),

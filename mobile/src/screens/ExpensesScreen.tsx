@@ -3,6 +3,7 @@ import { Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } 
 import { useFocusEffect, useNavigation, useRoute, type RouteProp } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { createClaim, listExpenses } from "../api";
+import { BillPreview } from "../components/BillPreview";
 import { Button, Notice, Pill } from "../components/ui";
 import { formatLongDate, formatMoney } from "../format";
 import type { AppStackParamList, TabParamList } from "../navigation/types";
@@ -96,6 +97,7 @@ export function ExpensesScreen() {
             const on = selected.includes(expense.id);
             return (
               <View key={expense.id} style={[styles.row, on && styles.rowOn]}>
+                <BillPreview expenseId={expense.id} fileName={expense.fileName} mimeType={expense.mimeType} size="thumb" />
                 <Pressable onPress={() => open(expense)} style={styles.rowMain}>
                   <Text style={styles.vendor}>{expense.vendorName || expense.fileName}</Text>
                   <Text style={styles.meta}>

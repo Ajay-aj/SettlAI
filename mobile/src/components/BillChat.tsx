@@ -2,6 +2,7 @@ import { createElement, useRef, useState, type DragEvent, type ReactNode } from 
 import { Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import type { LocalFile } from "../api";
 import { issuesForBill } from "../bills";
+import { BillPreview } from "./BillPreview";
 import { formatLongDate, formatMoney } from "../format";
 import { theme } from "../theme";
 import { NATURE_LABELS, STATUS_LABELS, toDraft, type Claim, type Expense } from "../types";
@@ -303,12 +304,13 @@ function TurnView({
       {turn.expenses.map((expense) => {
         const issues = issuesForBill(toDraft(expense));
         return (
-          <Pressable
-            key={expense.id}
-            accessibilityRole="button"
-            onPress={() => (expense.claimId ? onOpenClaim(expense.claimId) : onOpenExpense(expense.id))}
-            style={({ pressed }) => [styles.bill, pressed && styles.pressed]}
-          >
+          <View key={expense.id} style={styles.bill}>
+            <BillPreview expenseId={expense.id} fileName={expense.fileName} mimeType={expense.mimeType} size="card" />
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => (expense.claimId ? onOpenClaim(expense.claimId) : onOpenExpense(expense.id))}
+              style={({ pressed }) => [pressed && styles.pressed]}
+            >
             <View style={styles.billTop}>
               <Text numberOfLines={1} style={styles.vendor}>
                 {expense.vendorName || expense.fileName}
@@ -328,7 +330,8 @@ function TurnView({
             ))}
             {expense.extractError ? <Text style={styles.warn}>{expense.extractError}</Text> : null}
             <Text style={styles.view}>View</Text>
-          </Pressable>
+            </Pressable>
+          </View>
         );
       })}
       <Actions actions={turn.actions} onSend={onSend} />

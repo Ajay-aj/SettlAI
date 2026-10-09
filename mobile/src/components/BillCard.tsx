@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
-import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { issuesForBill } from "../bills";
+import { BillPreview } from "./BillPreview";
 import { formatMoney } from "../format";
 import { FOOD_PER_MEAL_LIMIT, groupPrompt } from "../groupExpense";
 import { theme } from "../theme";
@@ -47,13 +48,7 @@ export function BillCard({
   return (
     <View style={[styles.card, issues.length > 0 && styles.cardIssue]}>
       <View style={styles.header}>
-        {bill.localUri && bill.mimeType.startsWith("image/") ? (
-          <Image source={{ uri: bill.localUri }} style={styles.preview} />
-        ) : (
-          <View style={styles.previewFallback}>
-            <Text style={styles.previewLabel}>{bill.mimeType === "application/pdf" ? "PDF" : "Bill"}</Text>
-          </View>
-        )}
+        <BillPreview expenseId={bill.id} fileName={bill.fileName} mimeType={bill.mimeType} size="thumb" />
         <View style={styles.headerCopy}>
           <Text style={styles.fileName} numberOfLines={2}>
             {bill.fileName}
@@ -64,6 +59,8 @@ export function BillCard({
           <Text style={styles.remove}>Remove</Text>
         </Pressable>
       </View>
+
+      <BillPreview expenseId={bill.id} fileName={bill.fileName} mimeType={bill.mimeType} size="full" />
 
       {bill.extractError ? <Text style={styles.extractError}>{bill.extractError}</Text> : null}
 

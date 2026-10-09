@@ -92,6 +92,32 @@ export async function getExpense(id: string): Promise<Expense> {
   return result.expense;
 }
 
+export async function fetchBillBytes(id: string): Promise<Uint8Array> {
+  const token = await tokenProvider();
+  const headers = new Headers();
+  if (token) headers.set("Authorization", `Bearer ${token}`);
+  const response = await fetch(`${API_URL}/api/expenses/${id}/file`, { headers });
+  if (!response.ok) throw new ApiError("Could not open this bill.", response.status);
+  return new Uint8Array(await response.arrayBuffer());
+}
+
+export async function fetchBillFile(id: string): Promise<{ uri: string; mimeType: string; headers?: Record<string, string> }> {
+  const token = await tokenProvider();
+  const headers = new Headers();
+  if (token) headers.set("Authorization", `Bearer ${token}`);
+  if (Platform.OS !== "web") {
+    return {
+      uri: `${API_URL}/api/expenses/${id}/file`,
+      mimeType: "",
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    };
+  }
+  const response = await fetch(`${API_URL}/api/expenses/${id}/file`, { headers });
+  if (!response.ok) throw new ApiError("Could not open this bill.", response.status);
+  const blob = await response.blob();
+  return { uri: URL.createObjectURL(blob), mimeType: blob.type || "" };
+}
+
 export async function confirmExpenses(expenses: unknown[]): Promise<Expense[]> {
   const result = await request<{ expenses: Expense[] }>("/api/expenses/confirm", {
     method: "POST",

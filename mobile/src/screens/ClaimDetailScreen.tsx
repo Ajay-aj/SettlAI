@@ -10,6 +10,7 @@ import {
   submitClaim,
 } from "../api";
 import { useAuth } from "../auth/AuthContext";
+import { BillPreview } from "../components/BillPreview";
 import { Button, Field, Notice, Pill } from "../components/ui";
 import { formatLongDate, formatMoney, todayISO } from "../format";
 import type { AppStackParamList } from "../navigation/types";
@@ -107,14 +108,17 @@ export function ClaimDetailScreen() {
           <Text style={styles.section}>Bills</Text>
           {expenses.map((expense) => (
             <View key={expense.id} style={styles.line}>
-              <View style={styles.lineMain}>
-                <Text style={styles.vendor}>{expense.vendorName}</Text>
-                <Text style={styles.meta}>
-                  {expense.date ? formatLongDate(expense.date) : "No date"} · {NATURE_LABELS[expense.nature]}
-                  {expense.isGroup ? ` · ${expense.groupMembers.join(", ") || "Group"}` : ""}
-                </Text>
+              <BillPreview expenseId={expense.id} fileName={expense.fileName} mimeType={expense.mimeType} size="full" />
+              <View style={styles.lineBody}>
+                <View style={styles.lineMain}>
+                  <Text style={styles.vendor}>{expense.vendorName}</Text>
+                  <Text style={styles.meta}>
+                    {expense.date ? formatLongDate(expense.date) : "No date"} · {NATURE_LABELS[expense.nature]}
+                    {expense.isGroup ? ` · ${expense.groupMembers.join(", ") || "Group"}` : ""}
+                  </Text>
+                </View>
+                <Text style={styles.amount}>{formatMoney(expense.amount ?? 0, expense.currency)}</Text>
               </View>
-              <Text style={styles.amount}>{formatMoney(expense.amount ?? 0, expense.currency)}</Text>
             </View>
           ))}
 
@@ -209,7 +213,8 @@ const styles = StyleSheet.create({
   fill: { backgroundColor: theme.green, height: 8 },
   total: { color: theme.ink, fontSize: 15, fontWeight: "700" },
   section: { color: theme.ink, fontSize: 18, fontWeight: "800", marginTop: 8 },
-  line: { backgroundColor: theme.card, borderColor: theme.line, borderRadius: 14, borderWidth: 1, flexDirection: "row", gap: 12, padding: 12 },
+  line: { backgroundColor: theme.card, borderColor: theme.line, borderRadius: 14, borderWidth: 1, gap: 12, padding: 12 },
+  lineBody: { flexDirection: "row", gap: 12 },
   lineMain: { flex: 1, gap: 3 },
   vendor: { color: theme.ink, fontSize: 15, fontWeight: "700" },
   meta: { color: theme.muted, fontSize: 13 },
