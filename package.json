@@ -1,0 +1,9 @@
+{
+  "name": "reimburse",
+  "private": true,
+  "scripts": {
+    "dev:api": "npm run dev --prefix backend",
+    "dev:app": "npm run start --prefix mobile",
+    "test": "npm test --prefix backend"
+  }
+}
