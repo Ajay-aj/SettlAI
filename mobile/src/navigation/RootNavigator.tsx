@@ -7,6 +7,7 @@ import { useAuth } from "../auth/AuthContext";
 import { SignInScreen, SignUpScreen } from "../screens/AuthScreens";
 import { ClaimDetailScreen } from "../screens/ClaimDetailScreen";
 import { ClaimsScreen } from "../screens/ClaimsScreen";
+import { AdminHomeScreen } from "../screens/AdminHomeScreen";
 import { ExpensesScreen } from "../screens/ExpensesScreen";
 import { HomeScreen } from "../screens/HomeScreen";
 import { OnboardingScreen } from "../screens/OnboardingScreen";
@@ -42,9 +43,13 @@ function MainTabs() {
         },
       })}
     >
-      <Tabs.Screen name="Home" component={HomeScreen} options={{ title: "Reimburse" }} />
-      <Tabs.Screen name="Expenses" component={ExpensesScreen} options={{ title: "Bills" }} />
-      <Tabs.Screen name="Claims" component={ClaimsScreen} options={{ title: auth.isAdmin ? "Review" : "Claims" }} />
+      <Tabs.Screen
+        name="Home"
+        component={auth.isAdmin ? AdminHomeScreen : HomeScreen}
+        options={{ title: auth.isAdmin ? "To review" : "SettlAI" }}
+      />
+      {auth.isAdmin ? null : <Tabs.Screen name="Expenses" component={ExpensesScreen} options={{ title: "Bills" }} />}
+      <Tabs.Screen name="Claims" component={ClaimsScreen} options={{ title: "Claims" }} />
     </Tabs.Navigator>
   );
 }

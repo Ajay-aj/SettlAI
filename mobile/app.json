@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Reimburse",
+    "name": "SettlAI",
     "slug": "reimburse",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,8 +9,8 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "Reimburse uses the camera so you can photograph bills.",
-        "NSPhotoLibraryUsageDescription": "Reimburse uses your photos so you can upload bills."
+        "NSCameraUsageDescription": "SettlAI uses the camera so you can photograph bills.",
+        "NSPhotoLibraryUsageDescription": "SettlAI uses your photos so you can upload bills."
       }
     },
     "android": {
@@ -28,8 +28,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Reimburse uses your photos so you can upload bills.",
-          "cameraPermission": "Reimburse uses the camera so you can photograph bills."
+          "photosPermission": "SettlAI uses your photos so you can upload bills.",
+          "cameraPermission": "SettlAI uses the camera so you can photograph bills."
         }
       ]
     ],

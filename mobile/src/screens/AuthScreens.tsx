@@ -43,9 +43,9 @@ function AuthScreen({ mode }: { mode: "signIn" | "signUp" }) {
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.screen}>
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         <View style={styles.mark}>
-          <Text style={styles.markText}>R</Text>
+          <Text style={styles.markText}>S</Text>
         </View>
-        <Text style={styles.title}>{mode === "signIn" ? "Reimburse" : "Create your account"}</Text>
+        <Text style={styles.title}>{mode === "signIn" ? "SettlAI" : "Create your account"}</Text>
         <Text style={styles.subtitle}>Photograph a bill, confirm the details, and track what you’re owed.</Text>
 
         {firebaseReady ? (

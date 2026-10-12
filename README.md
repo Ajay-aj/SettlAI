@@ -12,7 +12,7 @@ A mobile app and API for reading bills, confirming expenses, building reimbursem
 
 ## Run it
 
-The API needs Node 22. The app is Expo and runs in Expo Go, a simulator, or the browser.
+The API needs Node 22. The app is Expo and runs in Expo Go, a simulator, or the browser. How the pieces fit together is in [ARCHITECTURE.md](ARCHITECTURE.md). For another computer, or for a hosted API and web app, see [DEPLOY.md](DEPLOY.md).
 
 ```bash
 cd backend
